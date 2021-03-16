@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <!-- Usamo boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <title>Editar Registro</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <a class="navbar-brand">UPMP</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/"
+                >Alumnos</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./carrera.ejs">Carreras</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <% if(alumno){%>
+
+    <div class="container mt-4">
+      <div class="card border-blak">
+        <div class="card-header text-white bg-dark text-center">Editar Registro</div>
+        <div class="card-body">
+          <form action="/update" method="POST">
+            <input id="matricula" name="matricula" value="<%= alumno.matricula %> " hidden />
+            <div class="mb-3">
+              <!-- <label for="alumno" class="form-label">Matricula</label>
+              <input
+                type="text"
+                class="form-control"
+                id="matricula"
+                name="matricula"
+                value="<%= alumno.matricula %>"
+                tabindex="1"
+              />
+            </div> -->
+            <div class="mb-3">
+              <label for="alumno" class="form-label">ID Carrera</label>
+              <select
+                name="id_carrera"
+                id="id_carrera"
+                class="from-select"
+                value="<%= alumno.id_carrera %>"
+                tabindex="2"
+              >
+                <option <%= alumno.id_carrera=='1'?"selected":'' %> value="1" selected>ISC</option>
+                <option <%= alumno.id_carrera=='2'?"selected":'' %> value="2">BIO</option>
+                <option <%= alumno.id_carrera=='3'?"selected":'' %> value="3">LyT</option>
+                <option <%= alumno.id_carrera=='4'?"selected":'' %> value="4">PyMs</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="alumno" class="form-label">Nombre</label>
+              <input
+                type="text"
+                class="form-control"
+                id="nombre"
+                name="nombre"
+                value="<%= alumno.nombre %>"
+                tabindex="3"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="alumno" class="form-label">Apellido Paterno</label>
+              <input
+                type="text"
+                class="form-control"
+                id="apellidoap"
+                name="apellidoap"
+                value="<%= alumno.apellidoap %>"
+                tabindex="4"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="alumno" class="form-label">Apellido Materno</label>
+              <input
+                type="text"
+                class="form-control"
+                id="apellidoam"
+                name="apellidoam"
+                value="<%= alumno.apellidoam %>"
+                tabindex="5"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="alumno" class="form-label">Grado</label>
+              <select
+                name="grado"
+                id="grado"
+                class="from-select"
+                value="<%= alumno.grado %>"
+                tabindex="6"
+              >
+                <option <%= alumno.grado =='3'?"selected":"" %> value="3" selected>3</option>
+                <option <%= alumno.grado =='6'?"selected":"" %> value="6">6</option>
+                <option <%= alumno.grado =='9'?"selected":"" %> value="9">9</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="alumno" class="form-label">Grupo</label>
+              <select
+                name="grupo"
+                id="grupo"
+                class="from-select"
+                value="<%= alumno.grupo %>"
+                tabindex="7"
+              >
+                <option <%= alumno.grupo =='A'?"selected":"" %> value="A" selected>A</option>
+                <option <%= alumno.grupo =='B'?"selected":"" %> value="B">B</option>
+                <option <%= alumno.grupo =='C'?"selected":"" %> value="C">C</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="alumno" class="form-label"
+                >Correo Institucional</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="correo_institucional"
+                name="correo_institucional"
+                value="<%= alumno.correo_institucional %>"
+                tabindex="8"
+              />
+            </div>
+            <button type="submit" class="btn btn-warning" tabindex="9">
+              Guardar
+            </button>
+            <a href="/" class="btn btn-secondary">Cancelar</a>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% } %>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
