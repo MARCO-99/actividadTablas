@@ -50,7 +50,7 @@ router.get('/delete/:matricula',(req,res)=>{
             res.redirect('/');
         }
     })   
-});
+})
 
 
 const crud = require('./controllers/crud');
