@@ -15,13 +15,16 @@ router.get('/',(req,res)=>{
         }
     })
 });
-
+// Ruta para login
+router.get('/login',(req,res)=>{
+    res.render('login.ejs');
+});
 
 //Ruta para crear registros
 
 router.get('/create',(req,res)=>{
     res.render('create.ejs');
-});
+})
 
 
 
