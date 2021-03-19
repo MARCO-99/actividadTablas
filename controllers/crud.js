@@ -1,4 +1,5 @@
 const conexion = require("../database/db");
+const bcrypt = require('bcryptjs');
 
 exports.save = (req, res) => {
   const matricula = req.body.matricula;
@@ -112,3 +113,42 @@ exports.saveCarrera = (req, res) => {
     });
   };
   
+
+  // registro de usuarios
+  exports.register= (req,res)=>{
+  const user= req.body.user;
+  const name= req.body.name;
+  const rol= req.body.rol;
+  const pass= req.body.pass;
+  let passwordHaash=  bcrypt.hash(pass,8);
+
+  conexion.query('INSERT INTO login SET ?',{user:user,name:name,rol:rol,pass:passwordHaash}, (err,results)=>{
+      if(err){
+          console.log(err.message)
+      }else{
+          res.redirect('/login')
+
+      }
+  })
+}
+
+// User login
+exports.login= (req,res)=>{
+  const user = req.body.user;
+  const pass= req.body.pass;
+  let passwordHaash=  bcrypt.hash(pass,8);
+
+  if (user && pass){
+    conexion.query('SELECT * FROM login WHERE user= ? ',[user], (err, results)=>{
+      console.log(results)
+      if( results.length==0||!( bcrypt.compare(passwordHaash,results[0].pass)) ){
+        res.send('incorrecro')
+      }else{
+        res.send('correct')
+      }
+    })
+  }else{
+    res.send('invalid')
+  }
+  
+}

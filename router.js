@@ -14,10 +14,15 @@ router.get('/',(req,res)=>{
             res.render('index.ejs', {results:results})
         }
     })
-});
+})
 // Ruta para login
 router.get('/login',(req,res)=>{
     res.render('login.ejs');
+});
+//Ruta para logup
+
+router.get('/register',(req,res)=>{
+    res.render('register.ejs');
 });
 
 //Ruta para crear registros
@@ -93,7 +98,7 @@ router.get('/editCarrera/:id_carrera', (req,res)=>{
             res.render('editCarrera.ejs', {carrera:results[0]})
         }
     })    
-})
+});
 
 //Ruta para eliminar registro
 
@@ -113,5 +118,10 @@ router.get('/deleteCarrera/:id_carrera',(req,res)=>{
 
 router.post('/saveCarrera', crud.saveCarrera);
 router.post('/updateCarrera', crud.updateCarrera);
+
+
+router.post('/register',crud.register);
+router.post('/auth',crud.login);
+
 
 module.exports = router;
