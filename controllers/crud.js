@@ -1,5 +1,6 @@
 const conexion = require("../database/db");
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
+require("../router.js");
 
 exports.save = (req, res) => {
   const matricula = req.body.matricula;
@@ -65,90 +66,157 @@ exports.update = (req, res) => {
   });
 };
 
-
 // Crud para carreras
 
 exports.saveCarrera = (req, res) => {
-    const id_carrera = req.body.id_carrera;
-    const nombrec = req.body.nombrec;
-    const siglas = req.body.siglas;
-    
-    conexion.query(
-      "INSERT INTO carrera SET ?",
-      {
-        id_carrera: id_carrera,
-        nombrec: nombrec,
-        siglas: siglas,
-      },
-      (err, results) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.redirect("/carreras");
-        }
-      }
-    );
-  } 
-  
-  exports.updateCarrera = (req, res) => {
-    const id_carrera = req.body.id_carrera;
-    const nombrec = req.body.nombrec;
-    const siglas = req.body.siglas;
-  
-    let sql = `UPDATE carrera SET ? WHERE id_carrera=?`;
-    let data = [
-      {
-        nombrec: nombrec,
-        siglas: siglas,
-      },
-      [id_carrera],
-    ];
-    conexion.query(sql, data, (err, results) => {
+  const id_carrera = req.body.id_carrera;
+  const nombrec = req.body.nombrec;
+  const siglas = req.body.siglas;
+
+  conexion.query(
+    "INSERT INTO carrera SET ?",
+    {
+      id_carrera: id_carrera,
+      nombrec: nombrec,
+      siglas: siglas,
+    },
+    (err, results) => {
       if (err) {
         console.log(err);
       } else {
-        
         res.redirect("/carreras");
       }
-    });
-  };
-  
+    }
+  );
+};
 
-  // registro de usuarios
-  exports.register= (req,res)=>{
-  const user= req.body.user;
-  const name= req.body.name;
-  const rol= req.body.rol;
-  const pass= req.body.pass;
-  let passwordHaash=  bcrypt.hash(pass,8);
+exports.updateCarrera = (req, res) => {
+  const id_carrera = req.body.id_carrera;
+  const nombrec = req.body.nombrec;
+  const siglas = req.body.siglas;
 
-  conexion.query('INSERT INTO login SET ?',{user:user,name:name,rol:rol,pass:passwordHaash}, (err,results)=>{
-      if(err){
-          console.log(err.message)
-      }else{
-          res.redirect('/login')
+  let sql = `UPDATE carrera SET ? WHERE id_carrera=?`;
+  let data = [
+    {
+      nombrec: nombrec,
+      siglas: siglas,
+    },
+    [id_carrera],
+  ];
+  conexion.query(sql, data, (err, results) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/carreras");
+    }
+  });
+};
 
+// registro de usuarios
+exports.register = async (req, res) => {
+  const user = req.body.user;
+  const rol = req.body.rol;
+  const pass = req.body.pass;
+  let passwordHaash = await bcrypt.hash(pass, 8);
+  let valor = "";
+
+  conexion.query(
+    "INSERT INTO login SET ?",
+    { usermane: user, id_rol: rol, password: passwordHaash },
+    async (err, results) => {
+      if (err) {
+        console.log(err.message);
+      } else {
+        res.render("register", {
+          valor: "success",
+          alert: true,
+          alertTitle: "Registration",
+          alertMessage: "Registro Exitoso",
+          alertIcon: "success",
+          showConfirmButtom: false,
+          timer: 1500,
+          ruta: "/",
+        });
       }
-  })
-}
+    }
+  );
+};
 
 // User login
-exports.login= (req,res)=>{
+exports.login = async (req, res) => {
   const user = req.body.user;
-  const pass= req.body.pass;
-  let passwordHaash=  bcrypt.hash(pass,8);
+  const pass = req.body.pass;
+  let passwordHaash = await bcrypt.hash(pass, 8);
 
-  if (user && pass){
-    conexion.query('SELECT * FROM login WHERE user= ? ',[user], (err, results)=>{
-      console.log(results)
-      if( results.length==0||!( bcrypt.compare(passwordHaash,results[0].pass)) ){
-        res.send('incorrecro')
-      }else{
-        res.send('correct')
+  if (user && pass) {
+    conexion.query(
+      "SELECT * FROM login WHERE usermane= ? ",
+      [user],
+      async (err, results) => {
+        console.log(results);
+        if (
+          results.length == 0 ||
+          !(await bcrypt.compare(pass, results[0].password))
+        ) {
+          res.render("login", {
+            alert: true,
+            alertTitle: "Error",
+            alertMessage: "Usuario y/o Passwod incorrecto",
+            alertIcon: "error",
+            showConfirmButtom: true,
+            timer: false,
+            ruta: "/login",
+          });
+        } else {
+          req.session.rol = results[0].id_rol;
+          req.session.loggedIn = true;
+          res.render("login", {
+            alert: true,
+            alertTitle: "Conexion Exitosa",
+            alertMessage: "LogIn Correcto",
+            alertIcon: "success",
+            showConfirmButtom: false,
+            timer: 1500,
+            ruta: "/",
+          });
+        }
       }
-    })
-  }else{
-    res.send('invalid')
+    );
+  } else {
+    res.render("login", {
+      alert: true,
+      alertTitle: "Advertencia",
+      alertMessage: "Ingrese un usuario y/o password",
+      alertIcon: "warning",
+      showConfirmButtom: true,
+      timer: false,
+      ruta: "/login",
+    });
   }
-  
-}
+};
+
+//Auth pages
+exports.Auth = (req, res) => {
+  if (req.session.loggedIn) {
+    conexion.query("SELECT * FROM alumno", (err, results) => {
+      if (err) {
+        throw err;
+      } else {
+        res.render("index.ejs", { results: results, login: true });
+      }
+    });
+    
+  } else {
+    res.render("index", {
+      login: false,
+    });
+  }
+};
+
+//logout
+
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/");
+  });
+};

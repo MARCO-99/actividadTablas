@@ -4,17 +4,17 @@ const router = express.Router();
 const conexion= require('./database/db');
 
 
-router.get('/',(req,res)=>{
+// router.get('/',(req,res)=>{
     
-    conexion.query('SELECT * FROM alumno', (err,results)=>{
-        if (err){
-            throw err;
-        }
-        else{
-            res.render('index.ejs', {results:results})
-        }
-    })
-})
+//     conexion.query('SELECT * FROM alumno', (err,results)=>{
+//         if (err){
+//             throw err;
+//         }
+//         else{
+//             res.render('index.ejs', {results:results})
+//         }
+//     })
+// },crud.Auth)
 // Ruta para login
 router.get('/login',(req,res)=>{
     res.render('login.ejs');
@@ -122,6 +122,8 @@ router.post('/updateCarrera', crud.updateCarrera);
 
 router.post('/register',crud.register);
 router.post('/auth',crud.login);
+router.get('/',crud.Auth);
+router.get('/logout',crud.logout)
 
 
 module.exports = router;

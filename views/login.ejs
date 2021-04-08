@@ -14,6 +14,8 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"
     />
     <link rel="stylesheet" href="../resources/style.css" />
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
   </head>
 
   <body>
@@ -50,6 +52,23 @@
         
       </form>
     </div>
+    <% if(typeof alert != "undefined" ) { %>
+      <script>
+        Swal.fire({
+  
+          title: '<%= alertTitle %>',
+          text: '<%= alertMessage %>',
+          icon: '<%= alertIcon %>',
+          showConfirmButton: <%= showConfirmButtom %>,
+          timer: <%= timer %>
+  
+        }).then(()=>{
+          window.location= '<%= ruta %>'
+        })
+  
+        
+      </script>
+      <% } %>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/js/bootstrap.bundle.min.js"></script>
