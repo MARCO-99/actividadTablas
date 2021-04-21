@@ -15,15 +15,16 @@ const conexion= require('./database/db');
 //         }
 //     })
 // },crud.Auth)
+
 // Ruta para login
 router.get('/login',(req,res)=>{
     res.render('login.ejs');
 });
-//Ruta para logup
+    //Ruta para logup
 
-router.get('/register',(req,res)=>{
-    res.render('register.ejs');
-});
+    router.get('/register',(req,res)=>{
+        res.render('register.ejs');
+    });
 
 //Ruta para crear registros
 

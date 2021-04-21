@@ -72,40 +72,26 @@
       <table class="table table table-dark table-striped text-center at-4">
         <thead>
           <tr class="bg-primary text-white">
-            <th scope="col">Matricula</th>
-            <th scope="col">Carrera</th>
+            <th scope="col">Unidad</th>
+            <th scope="col">Descripcion</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido P.</th>
             <th scope="col">Appellido M.</th>
-            <th scope="col">Grado</th>
-            <th scope="col">Grupo</th>
-            <th scope="col">Correo</th>
-            <th scope="col">Acciones</th>
+            <th scope="col">Calificacion</th>
+            
           </tr>
         </thead>
         <tbody>
-          <% results.forEach((alumno)=>{ %>
+          <% results.forEach((calificacionesTareas)=>{ %>
           <tr>
-            <td><%= alumno.matricula %></td>
-            <td><%= alumno.id_carrera %></td>
-            <td><%= alumno.nombre%></td>
-            <td><%= alumno.apellidoap%></td>
-            <td><%= alumno.apellidoam%></td>
-            <td><%= alumno.grado%></td>
-            <td><%= alumno.grupo%></td>
-            <td><%= alumno.correo_institucional%></td>
-            <td>
-              <a
-                href="/edit/<%= alumno.matricula %>"
-                class="btn btn-outline-info"
-                ><i class="bx bxs-edit-alt"></i
-              ></a>
-              <a
-                href="/delete/<%= alumno.matricula %>"
-                class="btn btn-outline-danger"
-                ><i class="bx bxs-trash"></i
-              ></a>
-            </td>
+            <td><%= calificacionesTareas.Unidad %></td>
+            <td><%= calificacionesTareas.Descripcion %></td>
+            <td><%= calificacionesTareas.Nombre%></td>
+            <td><%= calificacionesTareas.Apellidoap %></td>
+            <td><%= calificacionesTareas.Apellidoam %></td>
+            <td><%= calificacionesTareas.Calificacion %></td>
+            
+            
           </tr>
           <% }) %>
         </tbody>

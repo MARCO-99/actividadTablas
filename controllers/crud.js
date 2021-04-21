@@ -148,8 +148,8 @@ exports.login = async (req, res) => {
   const pass = req.body.pass;
   let passwordHaash = await bcrypt.hash(pass, 8);
 
-  if (user && pass) {
-    conexion.query(
+    if (user && pass) {
+      conexion.query(
       "SELECT * FROM login WHERE usermane= ? ",
       [user],
       async (err, results) => {
@@ -197,8 +197,8 @@ exports.login = async (req, res) => {
 
 //Auth pages
 exports.Auth = (req, res) => {
-  if (req.session.loggedIn) {
-    conexion.query("SELECT * FROM alumno", (err, results) => {
+  if (req.session.loggedIn ) {
+    conexion.query("SELECT* from calificacionesTareas ", (err, results) => {
       if (err) {
         throw err;
       } else {
